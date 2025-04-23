@@ -1,18 +1,32 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Employee
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+from .forms import EmployeeUserForm
 
-
+@staff_member_required
 def employee_new(request):
-    return render(request, 'employees/employee_new.html')
-
-def employee_create(request):
     if request.method == 'POST':
-        name = request.POST['name']
-        email = request.POST['email']
-        Employee.objects.create(name=name, email=email)
-        return redirect('employee_index')
-    return redirect('employee_new')
+        form = EmployeeUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('employee_index')
+    else:
+        form = EmployeeUserForm()
+    return render(request, 'employees/employee_form.html', {'form': form})    
+    
+# def employee_new(request):
+#     return render(request, 'employees/employee_new.html')
 
+# def employee_create(request):
+#     if request.method == 'POST':
+#         name = request.POST['name']
+#         email = request.POST['email']
+#         Employee.objects.create(name=name, email=email)
+#         return redirect('employee_index')
+#     return redirect('employee_new')
+
+@login_required
 def employee_list(request):
     employees = Employee.objects.all()
     return render(request, 'employees/employee_list.html', {'employees':employees})
@@ -38,3 +52,6 @@ def employee_delete(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     employee.delete()
     return redirect('employee_index')
+
+def home(request):
+    return render(request, 'home.html')
