@@ -10,8 +10,6 @@ class EmployeeModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="testuser", password="password")
 
-# self は自分自身に操作を加えたいときに使うもの
-
     def test_employee_str_with_user(self):
         employee = Employee.objects.create(
             name="Alice",
@@ -20,6 +18,7 @@ class EmployeeModelTest(TestCase):
             user=self.user
         )
         self.assertEqual(str(employee), "Alice  (testuser)")
+
     def test_employee_str_without_user(self):
         employee = Employee.objects.create(
             name="Bob",
@@ -32,6 +31,7 @@ class EmployeeViewsUnitTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.staff_user = User.objects.create_user(username="staff", password="password", is_staff=True)
+
     def test_employee_new_view_post_valid(self):
         data = {
             'name': 'New Employee',
