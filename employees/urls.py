@@ -5,7 +5,7 @@ from .views import EmployeeListView#,EmployeeDetailView
 urlpatterns = [
     path('employee/', include('employees.urls')),
 ]
-
+ 
 urlpatterns = [
 #    path('', views.employee_list, name='employee_index'),
     path('new/', views.employee_new, name='employee_new'),
