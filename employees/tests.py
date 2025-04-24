@@ -27,7 +27,7 @@ class EmployeeModelTest(TestCase):
         )
         self.assertEqual(str(employee), "Bob  (No User)")
 
-class EmployeeViewsUnitTest(TestCase):
+class EmployeeViewsTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.staff_user = User.objects.create_user(username="staff", password="password", is_staff=True)
