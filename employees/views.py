@@ -1,8 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Employee
-from django.contrib.auth.decorators import login_required
+#from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from .forms import EmployeeUserForm
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView, DetailView, DeleteView
+
+@method_decorator(staff_member_required, name='dispatch')
+class EmployeeListView(ListView):
+     model = Employee
+     template_name = 'employees/employee_list.html'
+     context_object_name = 'employees'
 
 @staff_member_required
 def employee_new(request):
@@ -26,10 +34,16 @@ def employee_new(request):
 #         return redirect('employee_index')
 #     return redirect('employee_new')
 
-@login_required
-def employee_list(request):
-    employees = Employee.objects.all()
-    return render(request, 'employees/employee_list.html', {'employees':employees})
+#@login_required
+#def employee_list(request):
+#     employees = Employee.objects.all()
+#     return render(request, 'employees/employee_list.html', {'employees':employees})
+
+# @method_decorator(staff_member_required, name='dispatch')
+# class EmployeeDetailView(DetailView):
+#      model = Employee
+#      template_name = 'employees/employee_edit.html'
+#      context_object_name = 'employees'
 
 def employee_edit(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
